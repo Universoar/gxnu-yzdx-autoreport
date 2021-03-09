@@ -11,3 +11,7 @@ pip install requests
 # 运行
 python main.py
 ```
+
+## 关于多用户
+
+修改程序目录下的data.json即可，格式为：[{"username": "xxxxxx", "password": "xxxxx"},{"username": "xxxxx", "password": "xxxxx"}, ...]
