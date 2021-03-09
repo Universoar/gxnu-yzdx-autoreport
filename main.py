@@ -24,6 +24,7 @@ def userLogin(userGroup):
     except Exception as e:
         print("登录出错")
         print(e)
+        sys.exit()
     print("登录成功")
     return tokenGroup
 
@@ -45,7 +46,7 @@ def readData():
     except Exception as e:
         print("读取数据出错")
         print(e)
-
+        sys.exit()
     print("成功读取数据")
     return userGroup
 
