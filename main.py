@@ -52,13 +52,13 @@ def readData():
         userGroup = json.load(dataFile)
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "成功读取数据")
+        dataFile.close()
     except Exception as e:
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "读取数据出错")
         print(e)
         os.system("pause")
         sys.exit()
-    dataFile.close()
     return userGroup
 
 
@@ -74,7 +74,6 @@ def haveDataFile():
 if __name__ == '__main__':
     print("[{}]".format(time.strftime(
         "%Y-%m-%d %H:%M:%S", time.localtime())), "脚本运行")
-    userGroup = readData()
     lastTime = None
     isReport = False
     while True:
