@@ -27,7 +27,7 @@ def userLogin(userGroup):
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "登录出错")
         print(e)
-        input("按下任何键退出")
+        os.system("pause")
         sys.exit()
     return tokenGroup
 
@@ -54,7 +54,7 @@ def readData():
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "读取数据出错")
         print(e)
-        input("按下任何键退出")
+        os.system("pause")
         sys.exit()
     return userGroup
 
