@@ -72,14 +72,16 @@ if __name__ == '__main__':
     userGroup = readData()
     lastTime = None
     isReport = False
-    isNotReportTime = False
     while True:
+        isReportTime = False
         nowTime = time.time()
         nowHour = time.localtime()[3]
         if lastTime == None or nowTime-lastTime > 86400:  # 每天更新一次tokenGroup
             tokenGroup = userLogin(userGroup)
             lastTime = nowTime
         for i in range(len(REPORTHOUR)):
+            if nowHour >= REPORTHOUR[i][0] and nowHour < REPORTHOUR[i][1]:
+                isReportTime == True
             if nowHour >= REPORTHOUR[i][0] and nowHour < REPORTHOUR[i][1] and isReport == False:
                 print("[{}]".format(time.strftime(
                     "%Y-%m-%d %H:%M:%S", time.localtime())), "开始上报")
@@ -94,9 +96,6 @@ if __name__ == '__main__':
                         print("[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
                               "上报失败，返回信息：{}".format(responseData["msg"]))
                 isReport = True
-        for i in range(len(REPORTHOUR)):
-            if nowHour < REPORTHOUR[i][0] and nowHour >= REPORTHOUR[i][1]:
-                isNotReportTime == True
-        if isNotReportTime:
-            isReport = False
+        if isReportTime == False:
+            isReport == True
         time.sleep(SLEEPTIME)
