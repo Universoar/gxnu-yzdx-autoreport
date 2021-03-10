@@ -40,11 +40,13 @@ def readData():
         if haveDataFile() == False:
             print("[{}]".format(time.strftime(
                 "%Y-%m-%d %H:%M:%S", time.localtime())), "未读取到数据，新建数据文件")
-            dataFile = open(DATAFILENAME, "x")
             username = input("请输入账号：")
             password = input("请输入密码：")
+            if username or password =="":
+                raise Exception("数据不能为空")
             user = {"username": username, "password": password}
             userGroup.append(user)
+            dataFile = open(DATAFILENAME, "x")
             json.dump(userGroup, dataFile)
         dataFile = open(DATAFILENAME, "r")
         userGroup = json.load(dataFile)
@@ -56,6 +58,7 @@ def readData():
         print(e)
         os.system("pause")
         sys.exit()
+    dataFile.close()
     return userGroup
 
 
@@ -79,6 +82,7 @@ if __name__ == '__main__':
         nowTime = time.time()
         nowHour = time.localtime()[3]
         if lastTime == None or nowTime-lastTime > 86400:  # 每天更新一次tokenGroup
+            userGroup = readData()
             tokenGroup = userLogin(userGroup)
             lastTime = nowTime
         for i in range(len(REPORTHOUR)):
