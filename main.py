@@ -102,5 +102,5 @@ if __name__ == '__main__':
                               "上报失败，返回信息：{}".format(responseData["msg"]))
                 isReport = True
         if isReportTime == False:
-            isReport == True
+            isReport == False
         time.sleep(SLEEPTIME)
