@@ -86,7 +86,7 @@ if __name__ == '__main__':
             lastTime = nowTime
         for i in range(len(REPORTHOUR)):
             if nowHour >= REPORTHOUR[i][0] and nowHour < REPORTHOUR[i][1]:
-                isReportTime == True
+                isReportTime = True
             if nowHour >= REPORTHOUR[i][0] and nowHour < REPORTHOUR[i][1] and isReport == False:
                 print("[{}]".format(time.strftime(
                     "%Y-%m-%d %H:%M:%S", time.localtime())), "开始上报")
@@ -103,4 +103,4 @@ if __name__ == '__main__':
                 isReport = True
         if isReportTime == False:
             isReport == False
-        time.sleep(SLEEPTIME)
+        #time.sleep(SLEEPTIME)
