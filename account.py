@@ -50,6 +50,8 @@ class account:
             raise Exception("获取回调跳转地址失败")
         result_auth3 = requests.get("http://yiban.gxnu.edu.cn/login/callback/yb?verify_request=%s&yb_uid=%s&state=dx2" % (
             verifyRequest, self.yb_uid), allow_redirects=False)
+        if result_auth3.text != '':
+            raise Exception("易知独秀未被授权，请先在客户端上登录并授权易知独秀")
         self.dxtoken = re.findall(
             r"dx-token=(.*?);", result_auth3.headers.get("Set-Cookie"))[0]
 

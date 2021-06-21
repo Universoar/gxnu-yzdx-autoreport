@@ -22,7 +22,7 @@ def userLogin(userGroup):
             tokenGroup.append({"cookies": userAccount.dxtoken,
                                "token": userAccount.xToken})
         print("[{}]".format(time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime())), "登录成功")
+            "%Y-%m-%d %H:%M:%S", time.localtime())), "登录成功，现在每隔","{}".format(SLEEPTIME),"秒就会检查一次上报时间")
     except Exception as e:
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "登录出错")
