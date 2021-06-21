@@ -45,13 +45,21 @@ class account:
             raise Exception("学校应用认证失败")
         result_auth2 = requests.get("http://yiban.gxnu.edu.cn/dx-api/oauth/yb?verify_request=%s&yb_uid=%s&state=dx2" % (
             verifyRequest, self.yb_uid), allow_redirects=False)
-        self.phpseedid = re.findall(
-            r"PHPSESSID=(.*?);", result_auth2.headers.get("Set-Cookie"))[0]
-        self.yzdxToken = re.findall(
-            r"YZDXdxUserToken=(.*?);", result_auth2.headers.get("Set-Cookie"))[0]
+        location3 = result_auth2.headers.get("location")
+        if location3 is None:
+            raise Exception("获取回调跳转地址失败")
+        result_auth3 = requests.get("http://yiban.gxnu.edu.cn/login/callback/yb?verify_request=%s&yb_uid=%s&state=dx2" % (
+            verifyRequest, self.yb_uid), allow_redirects=False)
+        self.dxtoken = re.findall(
+            r"dx-token=(.*?);", result_auth3.headers.get("Set-Cookie"))[0]
 
     def getxToken(self):
-        self.cookies = "PHPSESSID=%s; YZDXdxUserToken=%s" % (
-            self.phpseedid, self.yzdxToken)
+        self.cookies = "dx-token=%s" % (
+            self.dxtoken)
+        headers = {
+            'Host': 'yiban.gxnu.edu.cn',
+            'Cookie': self.cookies,
+            'X-Requested-With': 'XMLHttpRequest',
+        }  # 此处需要发送Ajax请求，服务器才能正确响应
         self.xToken = requests.get(
-            "http://yiban.gxnu.edu.cn/dx-api/user/getUserInfo", cookies={"PHPSESSID": self.phpseedid, "YZDXdxUserToken": self.yzdxToken}).headers.get("X-Access-Token")
+            "http://yiban.gxnu.edu.cn/v4/login", headers=headers).headers.get("X-Access-Token")

@@ -2,7 +2,7 @@ import requests
 
 
 def reportTemperature(cookie, token):
-    url = "http://yiban.gxnu.edu.cn/dx-api/novel/reportTemperature"
+    url = "http://yiban.gxnu.edu.cn/v4/affairs/health-report/create"
     headers = {
         "Host": "yiban.gxnu.edu.cn",
         "Content-Type": "application/json;charset=utf-8",

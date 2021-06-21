@@ -19,7 +19,7 @@ def userLogin(userGroup):
             userAccount.login()
             userAccount.auth()
             userAccount.getxToken()
-            tokenGroup.append({"cookies": userAccount.cookies,
+            tokenGroup.append({"cookies": userAccount.dxtoken,
                                "token": userAccount.xToken})
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "登录成功")
@@ -42,7 +42,7 @@ def readData():
                 "%Y-%m-%d %H:%M:%S", time.localtime())), "未读取到数据，新建数据文件")
             username = input("请输入账号：")
             password = input("请输入密码：")
-            if username or password =="":
+            if username or password == "":
                 raise Exception("数据不能为空")
             user = {"username": username, "password": password}
             userGroup.append(user)
