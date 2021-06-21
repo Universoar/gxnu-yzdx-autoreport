@@ -4,6 +4,7 @@
 
 ## 使用
 
+- 在Python运行时中使用
 ```
 # 安装依赖
 pip install requests
@@ -11,7 +12,15 @@ pip install requests
 # 运行
 python main.py
 ```
+- 直接到[这里](https://github.com/Universoar/gxnu-yzdx-autoreport/releases)下载二进制文件运行
 
 ## 关于多用户
 
-修改程序目录下的data.json即可，格式为：[{"username": "xxxxx", "password": "xxxxx"},{"username": "xxxxx", "password": "xxxxx"}, ...]
+运行一次程序后，修改程序目录下的data.json即可。格式为
+```
+[{"username": "xxxxx", "password": "xxxxx"},
+{"username": "xxxxx", "password": "xxxxx"},
+...,
+{"username": "xxxxx", "password": "xxxxx"}
+]
+```
