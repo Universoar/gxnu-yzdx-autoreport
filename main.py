@@ -22,7 +22,7 @@ def userLogin(userGroup):
             tokenGroup.append({"cookies": userAccount.dxtoken,
                                "token": userAccount.xToken})
         print("[{}]".format(time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime())), "登录成功，现在每隔","{}".format(SLEEPTIME),"秒就会检查一次上报时间")
+            "%Y-%m-%d %H:%M:%S", time.localtime())), "登录成功，现在每隔", "{}".format(SLEEPTIME), "秒就会检查一次上报时间")
     except Exception as e:
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "登录出错")
@@ -42,6 +42,8 @@ def readData():
                 "%Y-%m-%d %H:%M:%S", time.localtime())), "未读取到数据，新建数据文件")
             username = input("请输入账号：")
             password = input("请输入密码：")
+            if username == "" or password == "":
+                raise Exception("数据不能为空")
             user = {"username": username, "password": password}
             userGroup.append(user)
             with open(DATAFILENAME, "w") as dataFile:
