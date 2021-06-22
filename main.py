@@ -96,7 +96,7 @@ if __name__ == '__main__':
                     responseData = response.json()
                     if responseData["code"] == 200:
                         print("[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
-                              "用户({})上报成功，体温36.8°C".format(responseData["data"]["name"]))
+                              "上报成功，体温36.8°C")
                     else:
                         print("[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
                               "上报失败，返回信息：{}".format(responseData["msg"]))
