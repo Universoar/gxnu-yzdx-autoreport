@@ -42,14 +42,12 @@ def readData():
                 "%Y-%m-%d %H:%M:%S", time.localtime())), "未读取到数据，新建数据文件")
             username = input("请输入账号：")
             password = input("请输入密码：")
-            if username or password == "":
-                raise Exception("数据不能为空")
             user = {"username": username, "password": password}
             userGroup.append(user)
-            dataFile = open(DATAFILENAME, "x")
-            json.dump(userGroup, dataFile)
-        dataFile = open(DATAFILENAME, "r")
-        userGroup = json.load(dataFile)
+            with open(DATAFILENAME, "w") as dataFile:
+                json.dump(userGroup, dataFile)
+        with open(DATAFILENAME, "r") as dataFile:
+            userGroup = json.load(dataFile)
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "成功读取数据")
         dataFile.close()
