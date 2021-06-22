@@ -94,7 +94,7 @@ if __name__ == '__main__':
                     response = reportTem.reportTemperature(
                         account["cookies"], account["token"])
                     responseData = response.json()
-                    if responseData["code"] == 2000:
+                    if responseData["code"] == 200:
                         print("[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
                               "用户({})上报成功，体温36.8°C".format(responseData["data"]["name"]))
                     else:
