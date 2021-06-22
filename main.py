@@ -52,7 +52,6 @@ def readData():
             userGroup = json.load(dataFile)
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "成功读取数据")
-        dataFile.close()
     except Exception as e:
         print("[{}]".format(time.strftime(
             "%Y-%m-%d %H:%M:%S", time.localtime())), "读取数据出错")
