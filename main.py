@@ -3,7 +3,6 @@ import os
 import sys
 import time
 import account
-import reportTem
 import json
 
 DATAFILENAME = "data.json"  # 数据文件的名称
@@ -19,13 +18,19 @@ def userLogin(userGroup):
             userAccount.login()
             userAccount.auth()
             userAccount.getxToken()
-            tokenGroup.append({"cookies": userAccount.dxtoken,
-                               "token": userAccount.xToken})
-        print("[{}]".format(time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime())), "登录成功，现在每隔", "{}".format(SLEEPTIME), "秒就会检查一次上报时间")
+            tokenGroup.append(
+                {"cookies": userAccount.dxtoken, "token": userAccount.xToken}
+            )
+        print(
+            "[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
+            "登录成功，现在每隔",
+            "{}".format(SLEEPTIME),
+            "秒就会检查一次上报时间",
+        )
     except Exception as e:
-        print("[{}]".format(time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime())), "登录出错")
+        print(
+            "[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())), "登录出错"
+        )
         print(e)
         os.system("pause")
         sys.exit()
@@ -35,11 +40,15 @@ def userLogin(userGroup):
 def readData():
     userGroup = []  # 字典数组
     try:
-        print("[{}]".format(time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime())), "从目录中读取用户数据...")
+        print(
+            "[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
+            "从目录中读取用户数据...",
+        )
         if haveDataFile() == False:
-            print("[{}]".format(time.strftime(
-                "%Y-%m-%d %H:%M:%S", time.localtime())), "未读取到数据，新建数据文件")
+            print(
+                "[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
+                "未读取到数据，新建数据文件",
+            )
             username = input("请输入账号：")
             password = input("请输入密码：")
             if username == "" or password == "":
@@ -50,11 +59,15 @@ def readData():
                 json.dump(userGroup, dataFile)
         with open(DATAFILENAME, "r") as dataFile:
             userGroup = json.load(dataFile)
-        print("[{}]".format(time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime())), "成功读取数据")
+        print(
+            "[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
+            "成功读取数据",
+        )
     except Exception as e:
-        print("[{}]".format(time.strftime(
-            "%Y-%m-%d %H:%M:%S", time.localtime())), "读取数据出错")
+        print(
+            "[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
+            "读取数据出错",
+        )
         print(e)
         os.system("pause")
         sys.exit()
@@ -70,35 +83,62 @@ def haveDataFile():
     return False
 
 
-if __name__ == '__main__':
-    print("[{}]".format(time.strftime(
-        "%Y-%m-%d %H:%M:%S", time.localtime())), "脚本运行")
+def reportTemperature(cookie, token):
+    url = "http://yiban.gxnu.edu.cn/v4/affairs/health-report/create"
+    headers = {
+        "Host": "yiban.gxnu.edu.cn",
+        "Content-Type": "application/json;charset=utf-8",
+        "X-Requested-With": "XMLHttpRequest",
+        "X-Access-Token": token,
+        "Origin": "http://yiban.gxnu.edu.cn",
+        "Cookie": cookie,
+    }
+    body = {"data": {"temperature": "36.8", "remark": ""}}
+    response = requests.post(url=url, headers=headers, json=body)
+    return response
+
+
+if __name__ == "__main__":
+    print("[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())), "脚本运行")
     lastTime = None
     isReport = False
     while True:
         isReportTime = False
         nowTime = time.time()
         nowHour = time.localtime()[3]
-        if lastTime == None or nowTime-lastTime > 86400:  # 每天更新一次tokenGroup
+        if lastTime == None or nowTime - lastTime > 86400:  # 每天更新一次tokenGroup
             userGroup = readData()
             tokenGroup = userLogin(userGroup)
             lastTime = nowTime
         for i in range(len(REPORTHOUR)):
             if nowHour >= REPORTHOUR[i][0] and nowHour < REPORTHOUR[i][1]:
                 isReportTime = True
-            if nowHour >= REPORTHOUR[i][0] and nowHour < REPORTHOUR[i][1] and isReport == False:
-                print("[{}]".format(time.strftime(
-                    "%Y-%m-%d %H:%M:%S", time.localtime())), "开始上报")
+            if (
+                nowHour >= REPORTHOUR[i][0]
+                and nowHour < REPORTHOUR[i][1]
+                and isReport == False
+            ):
+                print(
+                    "[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
+                    "开始上报",
+                )
                 for account in tokenGroup:
-                    response = reportTem.reportTemperature(
-                        account["cookies"], account["token"])
+                    response = reportTemperature(account["cookies"], account["token"])
                     responseData = response.json()
                     if responseData["code"] == 200:
-                        print("[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
-                              "上报成功，体温36.8°C")
+                        print(
+                            "[{}]".format(
+                                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                            ),
+                            "上报成功，体温36.8°C",
+                        )
                     else:
-                        print("[{}]".format(time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())),
-                              "上报失败，返回信息：{}".format(responseData["msg"]))
+                        print(
+                            "[{}]".format(
+                                time.strftime("%Y-%m-%d %H:%M:%S", time.localtime())
+                            ),
+                            "上报失败，返回信息：{}".format(responseData["msg"]),
+                        )
                 isReport = True
         if isReportTime == False:
             isReport = False
